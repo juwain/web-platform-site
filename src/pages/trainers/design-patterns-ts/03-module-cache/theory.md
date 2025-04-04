@@ -6,8 +6,10 @@ title: "Паттерн Module (Модуль), практика: кеш с WeakMa
 
 У вас есть объект, где ключи — это ID пользователей, а значения — массивы с их ответами в опроснике:
 
-```js
-const surveyData = {
+```ts
+type SurveyData = Record<string, number[]>;
+
+const surveyData: SurveyData = {
   user1: [5, 3, 4, 2, 5], // Ответы пользователя 1
   user2: [1, 2, 3, 4, 5], // Ответы пользователя 2
   // ...
@@ -18,12 +20,14 @@ const surveyData = {
 
 Логично будет вынести эту функцию в отдельный модуль, откуда она будет экспортироваться:
 
-```js
-// module.js
+```ts
+// module.ts
 
-function processSurveyData(obj) {
+function processSurveyData(obj: Record<string, number[]>): number[] {
   // Тяжёлые вычисления: массив средних баллов для каждого пользователя
-  const result = Object.values(obj).map((value) => calculateAverage(value));
+  const result: number[] = Object.values(obj).map((value) =>
+    calculateAverage(value),
+  );
 
   return result;
 }
@@ -33,10 +37,10 @@ export { processSurveyData };
 
 А в модуле-потребителе эта функция будет импортироваться и запускаться с данными пользователей:
 
-```js
-// App.js
+```ts
+// App.tsx
 
-import { processSurveyData } from "./module.js";
+import { processSurveyData } from "./module";
 
 const surveyData = {
   user1: [1, 2, 3, 4, 5],
@@ -47,15 +51,15 @@ const surveyData = {
 const result = processSurveyData(surveyData);
 ```
 
-А чтобы не выполнять повторно вычисления для одного и того же объекта, можно организовать внутри `module.js` кеш, о котором ничего не будет известно снаружи.
+А чтобы не выполнять повторно вычисления для одного и того же объекта, можно организовать внутри `module.ts` кеш, о котором ничего не будет известно снаружи.
 Тогда при повторном вызове функции `processSurveyData` результат не будет вычисляться заново, а ранее вычисленное значение просто возьмётся из кеша, и функция отработает быстрее.
 
 Подходящий инструмент для организации кеша – структура данных `WeakMap`. `WeakMap`, как и обычный `Map`, умеет хранить пары ключ-значение, но ключом в нём может быть только объект:
 
-```js
-const obj = { test: 1 };
-const value = 2;
-const cache = new WeakMap();
+```ts
+const obj: Record<string, number[]> = { test: 1 };
+const value: number = 2;
+const cache = new WeakMap<Record<string, number[]>, number[]>();
 
 cache.set(obj, value);
 // cache: [key: {test: 1}, value: 2]
@@ -65,13 +69,13 @@ cache.set(obj, value);
 
 В нашем случае, после выполнения вычислений внутри `processSurveyData` результат нужно записать в кеш перед возвращением, а перед вычислением проверять наличие уже вычисленного значения в кеше, и в случае его наличия, сразу же возвращать:
 
-```js
+```ts
 // проверка наличия вычисленного значения в кеше перед вычислением
 if (cache.has(obj)) {
   return cache.get(obj);
 }
 
-const result = /* вычисление */;
+const result: number[] = /* вычисление */;
 
 // запись вычисленного значения в кеш
 cache.set(obj, result);
@@ -79,4 +83,4 @@ cache.set(obj, result);
 return result;
 ```
 
-Реализуйте в модуле `module.js` внутри функции `processSurveyData` вычисление массива средних баллов для каждого пользователя с кешированием результата с помощью `WeakMap`.
+Реализуйте в модуле `module.ts` внутри функции `processSurveyData` вычисление массива средних баллов для каждого пользователя с кешированием результата с помощью `WeakMap`.
