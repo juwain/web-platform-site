@@ -19,25 +19,25 @@ title: "Паттерн Module (Модуль), теория"
 
 В JS (ES2015) у модуля тоже могут быть приватные поля и методы (просто живут внутри модуля) и публичные (явно экспортируются из модуля).
 
-```js
-// module.js
+```ts
+// module.ts
 
 // Приватные поля сокрыты внутри модуля
-const privateProperty = "private 123";
-const privateMethod = () => "private 123";
+const privateProperty: string = "private 123";
+const privateMethod = (): string => "private 123";
 
-const publicProperty = "public 123";
-const publicMethod = (text) => console.log(text);
+const publicProperty: string = "public 123";
+const publicMethod = (text: string): void => console.log(text);
 
 // Публичные поля явно экспортируются наружу
 export { publicProperty, publicMethod };
 ```
 
-```js
-// app.js
+```ts
+// app.ts
 
 // Публичные поля импортируются потребителем
-import { publicProperty, publicMethod } from "module.js";
+import { publicProperty, publicMethod } from "./module";
 
 publicMethod(publicProperty);
 // выведет в консоль 'public 123'
