@@ -1,6 +1,9 @@
-import { processSurveyData } from './module.js';
+import React from 'react';
+import { processSurveyData } from './module';
 
-const surveyData = {
+type SurveyData = Record<string, number[]>;
+
+const surveyData: SurveyData = {
   user1: [1, 2, 3, 4, 5],
   user2: [7, 1, 5, 3, 2],
   user3: [1, 2, 1, 2, 1],
@@ -8,7 +11,7 @@ const surveyData = {
   user5: [5, 4, 3, 4, 5],
 };
 
-export default function App() {
+export default function App(): JSX.Element {
   const result = processSurveyData(surveyData);
 
   return (

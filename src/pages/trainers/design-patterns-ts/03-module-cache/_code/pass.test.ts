@@ -1,4 +1,4 @@
-import { processSurveyData } from './module.js';
+import { processSurveyData } from './module';
 
 describe('processSurveyData', () => {
   it('Функция processSurveyData корректно вычисляет значения и возвращает полученный массив,', () => {
