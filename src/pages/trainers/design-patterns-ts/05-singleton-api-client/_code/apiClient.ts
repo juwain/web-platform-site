@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-let instance: AxiosInstance;
+let instance: ApiClient;
 
 class ApiClient {
   private client: AxiosInstance;
@@ -9,17 +9,15 @@ class ApiClient {
     if (!instance) {
       instance = this;
     }
-
     this.client = axios.create({
       baseURL: 'https://jsonplaceholder.typicode.com',
       timeout: 5000,
       headers: { 'Content-Type': 'application/json' },
     });
-
     return instance;
   }
 
-  get<T = any>(endpoint: string): Promise<AxiosResponse<T>> {
+  get<T = unknown>(endpoint: string): Promise<AxiosResponse<T>> {
     return this.client.get<T>(endpoint);
   }
 }

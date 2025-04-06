@@ -11,31 +11,39 @@ title: "Паттерн Proxy (Прокси), теория"
 
 В TS паттерн Proxy проще всего реализовать с помощью одноимённого объекта в языке — `Proxy`. Берём обычный объект, создаём для него прокси-объект, получаем возможность перехватывать и дополнять/переопределять операции, совершаемые с объектом:
 
-```js
+```ts
+interface Target {
+  message1: string;
+  message2: string;
+}
+
 // Целевой объект
-const target = {
+const target: Target = {
   message1: "hello",
   message2: "everyone",
 };
 
 // Прокси-объект
-const handler = {
-  get(target, prop) {
-    console.log(`Свойство ${prop} считалось`);
+const handler: ProxyHandler<Target> = {
+  get(target, prop: keyof Target, receiver) {
+    console.log(`Свойство ${String(prop)} считалось`);
+
     return target[prop];
   },
-  set(target, prop, value) {
-    console.log(`Свойству ${prop} задано значение ${value}`);
+  set(target, prop: keyof Target, value: string, receiver) {
+    console.log(`Свойству ${String(prop)} задано значение ${value}`);
+
     target[prop] = value;
+
     return true;
   },
 };
 
 // Proxy принимает в параметрах целевой объект
 // и прокси-объект, который будет «перехватывать» вызовы
-const proxiedObj = new Proxy(target, handler);
+const proxiedObj = new Proxy<Target>(target, handler);
 
-proxiedObj.message1;
+console.log(proxiedObj.message1);
 // log: Свойство message1 считалось
 
 proxiedObj.message2 = "nobody";

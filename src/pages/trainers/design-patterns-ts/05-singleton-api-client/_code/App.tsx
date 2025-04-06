@@ -13,7 +13,7 @@ export default function App(): JSX.Element | null {
 
   useEffect(() => {
     apiClient
-      .get<Todo>('/todos/1')
+      .get('/todos/1')
       .then((response) => setData(response.data))
       .catch((error) => console.error('Ошибка:', error));
   }, []);

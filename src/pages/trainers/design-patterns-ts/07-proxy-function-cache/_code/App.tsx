@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { memoize } from './lib';
 
 // «Медленная» функция вычисления квадрата числа
-const square = memoize((n) => n * n);
+const square = memoize((n: number): number => n * n);
 
 // Мемоизированная версия
 const memoizedSquare = memoize(square);
 
 const NUMBER = 10;
 
-export default function App() {
-  const [result, setResult] = useState(null);
+export default function App(): JSX.Element {
+  const [result, setResult] = useState<number | null>(null);
 
   const calculate = () => {
     const result = memoizedSquare(NUMBER);

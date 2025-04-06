@@ -13,7 +13,7 @@ title: "Паттерн Singleton (Синглтон), теория"
 
 С помощью ES-модулей можно легко реализовать Singleton благодаря сокрытию имплементации внутри модуля:
 
-```js
+```ts
 // singleton.ts
 
 let instance: Singleton | undefined;
@@ -31,7 +31,7 @@ class Singleton {
 export default Singleton;
 ```
 
-```js
+```ts
 // app.ts
 
 import Singleton from "./singleton";
@@ -74,7 +74,7 @@ import MySingleton from "./singleton";
 MySingleton.method();
 ```
 
-Ещё один вариант реализации Singleton в TS — создание обычного объекта (ведь классы в TS — это «обёртка» над обычными объектами, подробнее об этом в <a href="/trainers/design-patterns-js/08-prototype-theory">части про паттерн Prototype</a>).
+Ещё один вариант реализации Singleton в TS — создание обычного объекта (ведь классы в TS — это «обёртка» над обычными объектами, подробнее об этом в <a href="/trainers/design-patterns-ts/08-prototype-theory">части про паттерн Prototype</a>).
 
 То есть вместо создания одного инстанса класса можно просто создать один объект. А из-за того, что объекты импортируются в TS по ссылке на изначальный объект, этот объект будет существовать в единственном экземпляре:
 
