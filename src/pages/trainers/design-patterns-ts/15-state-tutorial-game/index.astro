@@ -19,8 +19,8 @@ const getFile = async (name: string, ext: string) => {
 };
 
 const fileNames = [
-  { name: "App", ext: "js" },
-  { name: "guessMachine", ext: "js" },
+  { name: "App", ext: "tsx" },
+  { name: "guessMachine", ext: "ts" },
   { name: "style", ext: "css" },
   { name: "tutorial.source", ext: "json" },
 ];
@@ -46,7 +46,7 @@ const nextUrl = getNextPartUrl(lessonParts, Astro.url.pathname);
   <Header mode="editor" breadcrumbs={breadcrumbs} />
   <Editor
     files={files}
-    template="react"
+    template="react-ts"
     nextUrl={nextUrl}
     options={{
       showSidebar: true,
